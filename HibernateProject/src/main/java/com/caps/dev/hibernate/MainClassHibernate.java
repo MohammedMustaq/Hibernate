@@ -34,7 +34,7 @@ public class MainClassHibernate {
 			case "3":
 				ref.search();break;
 			case "4":
-				ref.delete();break;
+				ref.update();break;
 				
 			default:System.out.println("please enter the correct option");
 			b=true;

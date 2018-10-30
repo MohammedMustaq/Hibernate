@@ -49,6 +49,21 @@ public class HibernateImpl implements DAOInterface {
 	
 	@Override
 	public void update() {
+		System.out.println("Enter person id to be updated: ");
+		int id=Integer.parseInt(in.nextLine());
+		System.out.println("Enter person email to be update: ");
+		String email=in.nextLine();
+		EntityManagerFactory emf = HibernateUtils.getEMF();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Person person= em.find(Person.class,id);
+		person.setEmailId(email);
+		tx.commit();
+		
+		
+		
+		
 		
 		
 	}
@@ -57,29 +72,14 @@ public class HibernateImpl implements DAOInterface {
 		System.out.println("Enter person id: ");
 		person.setPersonId(Integer.parseInt(in.nextLine()));
 		
-		EntityManagerFactory emf = null;
-		EntityManager em = null;
-		EntityTransaction tx = null;
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistanceUnit");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		person=em.find(Person.class, person.getPersonId());
+		em.remove(person);
+		tx.commit();
 
-
-		try {
-			emf = HibernateUtils.getEMF();
-			em = emf.createEntityManager();
-			tx = em.getTransaction();
-
-			tx.begin();
-
-			em.find(Person.class, 2);
-			em.remove(person);
-			tx.commit();
-			System.out.println("Person Deleted");
-		}catch(Exception e) {
-			e.printStackTrace();
-			tx.rollback();
-		}finally {
-			em.close();
-			emf.close();
-		}
 		
 		
 	}
@@ -93,7 +93,7 @@ public class HibernateImpl implements DAOInterface {
 		
 //		em.getTransaction().begin();
 		
-		 person = em.find(Person.class,1);
+		 person = em.find(Person.class,person.getPersonId());
 		System.out.println(person);
 		
 //		em.getTransaction().commit();
